@@ -40,4 +40,5 @@ class User extends Authenticatable
                 ->withTimestamps();
 
     }
+    //Usei o tinker, tive que usar o Hasfactory aqui
 }
