@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Author;
 use App\Models\Category;
+
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -23,6 +25,8 @@ class BookController extends Controller
             'publisher_id' => 'required|exists:publishers,id',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
+            'published_year' => 'required|integer',
+
         ]);
 
                Book::create($request->all());
@@ -48,6 +52,7 @@ class BookController extends Controller
             'publisher_id' => 'required|exists:publishers,id',
             'author_id' => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
+             'published_year' => 'required|integer',
         ]);
 
         Book::create($request->all());
@@ -84,7 +89,9 @@ public function show(Book $book)
     // Carregando autor, editora e categoria do livro com eager loading
     $book->load(['author', 'publisher', 'category']);
 
-    return view('books.show', compact('book'));
+    $users = User::all();
+
+    return view('books.show', compact('book','users'));
 
 }
 
@@ -95,6 +102,12 @@ public function index()
 
     return view('books.index', compact('books'));
 
+}
+public function destroy(Book $book)
+{
+    $book->delete();
+
+    return redirect()->route('books.index')->with('success', 'Livro excluído com sucesso.');
 }
 
 }

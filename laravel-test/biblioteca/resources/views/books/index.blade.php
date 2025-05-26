@@ -30,8 +30,9 @@
             @forelse($books as $book)
                 <tr>
                     <td>{{ $book->id }}</td>
-                    <td>{{ $book->title }}</td>
-                    <td>{{ $book->author->name }}</td>
+                    <td>{{ $book->title}}</td>
+               <td>{{ $book->author?->name ?? 'Sem autor' }}</td>
+               
                     <td>
                         <!-- Botão de Visualizar -->
                         <a href="{{ route('books.show', $book->id) }}" class="btn btn-info btn-sm">

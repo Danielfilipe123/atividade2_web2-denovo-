@@ -5,7 +5,7 @@
     <h1 class="my-4">Lista de Autores</h1>
 
     <a href="{{ route('authors.create') }}" class="btn btn-success mb-3">
-        <i class="bi bi-plus"></i> Adicionar Author(A)
+        <i class="bi bi-plus"></i> Adicionar Autor(A)
     </a>
 
     @if(session('success'))
