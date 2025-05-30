@@ -8,6 +8,29 @@
         <div class="card-header">
             <strong>Título:</strong> {{ $book->title }}
         </div>
+
+<h1>{{ $book->title }}</h1>
+
+<div class="card-body p-3 d-flex flex-row align-items-start">
+@if($book->image)
+        <img 
+            src="{{ asset('storage/' . $book->image) }}" 
+            alt="Capa do livro {{ $book->title }}" 
+            class="img-thumbnail border-end border-white pe-3 me-3" 
+            style="max-width: 200px; height: auto;"
+        >
+    @else
+        <img 
+            src="{{ asset('storage/default/default-book.png') }}" 
+            alt="Imagem padrão do livro" 
+            class="img-thumbnail border-end border-white pe-3 me-3" 
+            style="max-width: 200px; height: auto;"
+        >
+    @endif
+
+</div>
+
+<div>
         <div class="card-body">
             <p><strong>Autor:</strong>
                 <a href="{{ route('authors.show', $book->author->id) }}">
@@ -24,15 +47,13 @@
                     {{ $book->category->name }}
                 </a>
             </p>
+               <p><strong>Publicado:</strong>
+                <a href="{{ route('books.show', $book->author->id) }}">
+                    {{ $book->author->birth_date }}
+                </a>
+            </p>
         </div>
     </div>
-
-    <a href="{{ route('books.index') }}" class="btn btn-secondary mt-3">
-        <i class="bi bi-arrow-left"></i> Voltar
-    </a>
-</div>
-@endsection
-
 <!-- Formulário para Empréstimos -->
 <div class="card mb-4">
     <div class="card-header">Registrar Empréstimo</div>
@@ -96,5 +117,10 @@
     </div>
 </div>
 
+    <a href="{{ route('books.index') }}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
 
+@endsection
 

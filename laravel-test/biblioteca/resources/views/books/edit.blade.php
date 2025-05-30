@@ -4,9 +4,23 @@
 <div class="container">
     <h1 class="my-4">Editar Livro</h1>
 
-    <form action="{{ route('books.update', $book) }}" method="POST">
+    <form action="{{ route('books.update', $book) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+
+        <div class="mb-3">
+        <label for="image" class="form-label">Imagem de Capa</label>
+        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+        @error('image')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+
+        <!-- mostrar a imagem atual -->
+        @if ($book->image)
+            <img src="{{ asset('storage/' . $book->image) }}" alt="Capa atual" class="img-thumbnail mt-2" width="150">
+        @endif
+
+    </div>
         <div class="mb-3">
             <label for="title" class="form-label">Título</label>
             <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $book->title) }}" required>
@@ -68,6 +82,17 @@
             @enderror
         </div>
 
+<div class="mb-3">
+    <label for="published_year" class="form-label">Ano de Publicação</label>
+    <input type="number" class="form-control @error('published_year') is-invalid @enderror"
+           id="published_year" name="published_year"
+           value="{{ old('published_year', $book->published_year) }}" required>
+    @error('published_year')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
         <button type="submit" class="btn btn-success">Atualizar</button>
         <a href="{{ route('books.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>

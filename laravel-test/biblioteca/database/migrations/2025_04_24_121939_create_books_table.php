@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('publisher_id');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
