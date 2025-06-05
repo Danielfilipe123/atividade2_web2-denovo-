@@ -125,4 +125,4 @@ if ($request->hasFile('image')) {
 
     return redirect()->route('books.index')->with('success', 'Livro excluído com sucesso.');
     }
-}
+}//storage
