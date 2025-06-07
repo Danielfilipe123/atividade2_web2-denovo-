@@ -11,7 +11,13 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
+
 {
+   
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     public function createWithId()
     {
         return view('books.create-id');

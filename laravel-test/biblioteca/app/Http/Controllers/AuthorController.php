@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 class AuthorController extends Controller
 {
 
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     public function index()
     {
 

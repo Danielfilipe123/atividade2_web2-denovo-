@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 class PublisherController extends Controller
 {
   
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     public function index()
     {
        
