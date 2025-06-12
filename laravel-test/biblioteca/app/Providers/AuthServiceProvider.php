@@ -8,15 +8,19 @@ use App\Policies\UserPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
-   protected $policies = [
-    \App\Models\User::class => \App\Policies\UserPolicy::class,
-];
+    protected $policies = [
+        User::class => UserPolicy::class,
+        Book::class => BookPolicy::class,
+        Author::class => AuthorPolicy::class, 
+        Publisher::class => PublisherPolicy::class,
+        Categories::class => CategoriesPolicy::class,
+    ];
 
     public function boot()
     {
         $this->registerPolicies();
 
-        
+        // outras autorizações se quiser...
     }
 }
 

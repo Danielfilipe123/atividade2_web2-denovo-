@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-  
+ 
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'category');
+    }
     public function index()
     {
         $categories = Category::all();

@@ -9,6 +9,7 @@ use App\Models\Publisher;
 use App\Models\Author;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
 
@@ -16,7 +17,7 @@ class BookController extends Controller
    
     public function __construct()
     {
-        $this->authorizeResource(User::class, 'user');
+        $this->authorizeResource(User::class, 'book');
     }
     public function createWithId()
     {
@@ -40,6 +41,7 @@ class BookController extends Controller
 
     public function createWithSelect()
     {
+        $this->authorize('createWithSelect', auth()->user());
         $publishers = Publisher::all();
         $authors = Author::all();
         $categories = Category::all();
@@ -73,7 +75,7 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         $publishers = Publisher::all();
-        $authors = Author::all();
+        $authors = Author::all(); 
         $categories = Category::all();
 
         return view('books.edit', compact('book', 'publishers', 'authors', 'categories'));

@@ -11,7 +11,7 @@ class PublisherController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(User::class, 'user');
+        $this->authorizeResource(User::class, 'publisher');
     }
 
     public function index()
