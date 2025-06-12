@@ -37,5 +37,5 @@ class UserPolicy
     {
         return in_array($user->role, ['admin', 'bibliotecario']);
     }
-//.
+
 }
