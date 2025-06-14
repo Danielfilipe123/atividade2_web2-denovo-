@@ -19,9 +19,9 @@ class BookPolicy
         return in_array($user->role, ['admin', 'bibliotecario', 'cliente']);
     }
 
-    public function createWithSelect(User $user): bool
+    public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'bibliotecario', 'cliente']);
+        return in_array($user->role, ['admin', 'bibliotecario']);
     }
 
     public function update(User $user, Book $model): bool

@@ -41,7 +41,7 @@ class BookController extends Controller
 
     public function createWithSelect()
     {
-        $this->authorize('createWithSelect', auth()->user());
+       
         $publishers = Publisher::all();
         $authors = Author::all();
         $categories = Category::all();
