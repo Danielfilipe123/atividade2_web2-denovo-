@@ -21,7 +21,7 @@ class BookPolicy
 
     public function create(User $user): bool
     {
-        return in_array($user->role, ['admin', 'bibliotecario']);
+        return in_array($user->role, ['admin', 'bibliotecario', 'cliente']);
     }
 
     public function update(User $user, Book $model): bool
