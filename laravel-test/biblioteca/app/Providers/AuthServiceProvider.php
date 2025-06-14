@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
         Author::class => AuthorPolicy::class, 
         Publisher::class => PublisherPolicy::class,
         Categories::class => CategoriesPolicy::class,
+        Borrowing::class => BorrowingPolicy::class,
     ];
 
     public function boot()

@@ -16,6 +16,17 @@ class BorrowingController extends Controller
         'user_id' => 'required|exists:users,id',
     ]);
 
+     $jaEmprestado = Borrowing::where('book_id', $book->id)
+                                ->whereNull('returned_at')
+                                ->exists();
+
+    if ($jaEmprestado) {
+        return redirect()
+            ->back()
+            ->with('error', 'Este livro já se encontra emprestado.');
+    }
+
+
     Borrowing::create([
         'user_id' => $request->user_id,
         'book_id' => $book->id,
@@ -27,6 +38,9 @@ class BorrowingController extends Controller
 
 public function returnBook(Borrowing $borrowing)
 {
+
+    $this->authorize('returnBook', $borrowing);
+
     $borrowing->update([
         'returned_at' => now(),
     ]);
