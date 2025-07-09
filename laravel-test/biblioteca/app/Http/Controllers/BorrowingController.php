@@ -12,6 +12,9 @@ class BorrowingController extends Controller
     
     public function store(Request $request, Book $book)
 {
+
+    $limite = 5;
+
     $request->validate([
         'user_id' => 'required|exists:users,id',
     ]);
@@ -24,6 +27,16 @@ class BorrowingController extends Controller
         return redirect()
             ->back()
             ->with('error', 'Este livro já se encontra emprestado.');
+    }
+
+     $quantidade = Borrowing::where('user_id', $request->user_id)
+                                ->whereNull('returned_at')
+                                ->count();
+    
+    if ($quantidade >=  $limite ) {
+        return redirect()
+            ->back()
+            ->with('error', 'Este livro esta acima de 5');
     }
 
 
