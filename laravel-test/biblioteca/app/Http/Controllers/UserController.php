@@ -52,4 +52,13 @@ class UserController extends Controller
         $user->update($request->only('name', 'email'));
         return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso.');
     }
+
+    public function pagarMulta(User $user)
+{
+    $user->debt = 0;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Multa paga com sucesso.');
+}
+
 }

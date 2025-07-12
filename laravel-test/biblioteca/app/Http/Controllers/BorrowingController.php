@@ -39,11 +39,17 @@ class BorrowingController extends Controller
             ->with('error', 'Este livro esta acima de 5');
     }
 
+    $user = User::find($request->user_id);
+    if ($user->debt > 0) {
+    return redirect()->back()->with('erro', 'Usuário possui multas pendentes.');
+}
+
 
     Borrowing::create([
         'user_id' => $request->user_id,
         'book_id' => $book->id,
         'borrowed_at' => now(),
+        'due_at'=> now()->addDays(15),
     ]);
 
     return redirect()->route('books.show', $book)->with('success', 'Empréstimo registrado com sucesso.');
@@ -54,11 +60,23 @@ public function returnBook(Borrowing $borrowing)
 
     $this->authorize('returnBook', $borrowing);
 
-    $borrowing->update([
-        'returned_at' => now(),
-    ]);
+    $today = now();
+    $borrowing->returned_at = $today;
 
-    return redirect()->route('books.show', $borrowing->book_id)->with('success', 'Devolução registrada com sucesso.');
+     if (!is_null($borrowing->due_at) && now()->gt($borrowing->due_at)) {
+        $diasAtraso = $today->diffInDays($borrowing->due_at);
+        $multa = $diasAtraso * 0.50;
+
+        $borrowing->fine_amount = $multa;
+
+        $user = $borrowing->user;
+        $user->debt += $multa;
+        $user->save();
+    }
+
+    $borrowing->save();
+
+    return redirect()->back()->with('success', 'Livro devolvido com sucesso.');
 }
 
 public function userBorrowings(User $user)

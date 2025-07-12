@@ -30,7 +30,7 @@ class Book extends Model
     public function users(){
 
         return $this->belongsToMany(User::class, 'borrowings')
-        ->withPivot('id','borrowed_at', 'returned_at')
+        ->withPivot('id','borrowed_at','due_at', 'returned_at', 'fine_amount' )
         ->withTimestamps();
 
     }

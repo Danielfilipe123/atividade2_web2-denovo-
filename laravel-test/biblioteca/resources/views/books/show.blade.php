@@ -88,6 +88,7 @@
             </div>
             <button type="submit" class="btn btn-success">Registrar Empréstimo</button>
         </form>
+
     </div>
 </div>
 
@@ -109,24 +110,61 @@
                 </thead>
                 <tbody>
     @foreach($book->users as $user)
-        <tr>
-            <td>
-                <a href="{{ route('users.show', $user->id) }}">
-                    {{ $user->name }}
-                </a>
-            </td>
-            <td>{{ $user->pivot->borrowed_at }}</td>
-            <td>{{ $user->pivot->returned_at ?? 'Em Aberto' }}</td>
-            <td>
-                @if(is_null($user->pivot->returned_at))
-                    <form action="{{ route('borrowings.return', $user->pivot->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <button class="btn btn-warning btn-sm">Devolver</button>
-                    </form>
-                @endif
-            </td>
-        </tr>
+    <tr>
+    <td>
+        <a href="{{ route('users.show', $user->id) }}">
+            {{ $user->name }}
+        </a>
+    </td>
+    <td>{{ $user->pivot->borrowed_at }}</td>
+    <td>{{ $user->pivot->returned_at ?? 'Em Aberto' }}</td>
+    <td>
+
+
+   @if (is_null($user->pivot->returned_at))
+@if (!is_null($user->pivot->due_at) && now()->gt($user->pivot->due_at) && is_null($user->pivot->returned_at))
+    <span class="text-danger">Atrasado</span>
+        <small>
+    Atrasado há {{ \Carbon\Carbon::parse($user->pivot->due_at)->diffInDays(\Carbon\Carbon::parse($user->pivot->returned_at), false) }} dia(s)
+     Multa: R$ {{ number_format($user->pivot->fine_amount, 2, ',', '.') }}
+</small>
+
+    @else
+        <span class="text-success">No prazo</span>
+    @endif
+@else
+    @if (!is_null($user->pivot->due_at) && $user->pivot->returned_at > $user->pivot->due_at)
+        <span class="text-warning">Entregue com Atraso</span><br>
+@php
+   $dueAt = \Carbon\Carbon::parse($user->pivot->due_at);
+$returnedAt = \Carbon\Carbon::parse($user->pivot->returned_at);
+
+$diasAtraso = 0;
+if ($returnedAt->gt($dueAt)) {
+    $diasAtraso = $returnedAt->diffInDays($dueAt); // positivo, só se for atraso
+}
+
+@endphp
+
+Atraso de {{ $diasAtraso }} dia(s)
+
+    @else
+        <span class="text-muted">Devolvido no Prazo</span>
+    @endif
+@endif
+
+    </td>
+    <td>
+        @if(is_null($user->pivot->returned_at))
+            <form action="{{ route('borrowings.return', $user->pivot->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <button class="btn btn-warning btn-sm">Devolver</button>
+            </form>
+        @endif
+    </td>
+</tr>
+
     @endforeach
 </tbody>
             </table>
